@@ -1,13 +1,20 @@
-from ParseEmail import parseEmail
+from parseemail import parseEmail
 import os
-
+import createDatabase as db
 def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
 
     if(isSpam):
         #TODO:Check if word exist in database
         #if so increase  for spam frequency
         #else create entry for data base and set spam frequency to 1 and HAM =0
-        totalSpamWord += 1
+         totalSpamWord += 1
+         for word in bodyOfEmail:
+             if db.checkWords(word)>0:
+                #update frequency
+                db.updateFrequencies(word, False)
+             else:
+                 db.insertWords(word,1,0)
+
 
 
     else:   #Not Spam
@@ -15,6 +22,12 @@ def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
     #if so increase for ham frequency
     #Else create entry for database and set HAM (not spam) frequency to 1 and spam = 0
         totalHamWord += 1
+        for word in bodyOfEmail:
+            if db.checkWords(word) > 0:
+                #update frequency
+                db.updateFrequencies(word, True)
+            else:
+                db.insertWords(word, 0, 1)
 
 
 def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam):
@@ -26,8 +39,11 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
 
 
 
-    pathHam = '/Users/tedouni/Desktop/531Project/testData/ham/'
-    pathSpam = '/Users/tedouni/Desktop/531Project/testData/spam/'
+    # pathHam = '/Users/tedouni/Desktop/531Project/testData/ham/'
+    # pathSpam = '/Users/tedouni/Desktop/531Project/testData/spam/'
+
+    pathHam = 'trainingData/easy_ham/'
+    pathSpam = 'trainingData/spam/'
 
     #SPAM
     for fileName in os.listdir(pathSpam):
@@ -44,15 +60,15 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
         totalEmail += 1
         analyzeEmail(wordList,False,totalSpamWord,totalHamWord)
 
-
+    db.endDbOperations()
     pIsHam = float(numberOfHam)/float(totalEmail)
     pIsSpam = float(numberOfSpam)/float(totalEmail)
 
-    print pIsHam
-    print pIsSpam
+    print(pIsHam)
+    print(pIsSpam)
 
 
 
 
 
-train(0,0,0,0,0,0,0)
+# train(0,0,0,0,0,0,0)

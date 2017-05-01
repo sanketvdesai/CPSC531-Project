@@ -1,12 +1,11 @@
 #http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
 #to strip html
 
-
 import email
 import os
 import string
 from HTMLParser import HTMLParser
-
+from codecs import open as codopen
 from os.path import dirname, basename
 
 
@@ -47,7 +46,7 @@ def convertToList(body):
 def parseEmail(path):
 
     # print fileName
-    with open(path) as f:
+    with codopen(path, "r",encoding='utf-8', errors='ignore') as f:
         text = f.read()
         e = email.message_from_string(text)
         body = e.get_payload()

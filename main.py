@@ -1,33 +1,13 @@
 from TrainData import train
 from TrainData import analyzeEmail
-#import createDatabase
-
-# Number of Spam emails 1398
-# Number of Ham emails 5052
-#Total emails = 6450
-
-#Prob(Spam) = 0.21665632754
-#Prob(~Spam) = 1- P(spam)= 0.78334367246
-#
-# P(A|B) = P(B|A) P(A)
-#         -------------
-#         P(B)
-#Given A = Spam, B = Contents of Email
-#IF P(A)*P(B|A) > P(¬A)*P(B|¬A)) then email is spam
-#P(B) not relevant since common divisor
-#P(A), P(~A) already calculated
-#Need to calculate P(B|A) and P(B|~A)
-
-#Will need to use bag of words model to calculate P(B|A) and P(B|~A)
-#Will pay attention to frequency of words
-#To calculate P(apple | spam), would count the number of times apple appears in
-#all of the spam emails and divide by the total number of words in all spam emails
-
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+from createDatabase import createTables
 def main():
     #Create database
-
-    #Initiate to 0
+    #createTables()
+    #Iitiate to 0
     totalSpamWord = 0
     totalHamWord = 0
     totalEmail = 0
@@ -35,7 +15,7 @@ def main():
 
     #will not return anything, will just modify current values and
     #modify database
-    train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam)
+    train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,0,0,0)
 
 
 
